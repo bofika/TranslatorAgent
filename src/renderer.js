@@ -43,10 +43,29 @@ startBtn.onclick = async () => {
 
   palabraClient = new PalabraClient(cfg.palabraKey, sourceLang, targets);
 
+  palabraClient.on('status', (s) => {
+    switch (s) {
+      case 'connecting':
+        statusDiv.textContent = 'Connecting to Palabra...';
+        break;
+      case 'connected':
+        statusDiv.textContent = 'Connected to Palabra';
+        break;
+      case 'reconnecting':
+        statusDiv.textContent = 'Reconnecting to Palabra...';
+        break;
+      case 'closed':
+        statusDiv.textContent = 'Connection closed';
+        break;
+      case 'error':
+        statusDiv.textContent = 'Connection error';
+        break;
+    }
+  });
+
   try {
     await palabraClient.connect();
     palabraClient.startSession();
-    statusDiv.textContent = 'Session started';
 
     palabraClient.onTranslation((msg) => {
       console.log('Translation update:', msg);
