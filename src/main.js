@@ -1,5 +1,9 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+
+ipcMain.on('get-user-data-path', (event) => {
+  event.returnValue = app.getPath('userData');
+});
 
 function createWindow() {
   const win = new BrowserWindow({
