@@ -1,7 +1,9 @@
 const fs = require('fs');
 const path = require('path');
+const { ipcRenderer } = require('electron');
 
-const CONFIG_PATH = path.join(__dirname, '..', 'config.json');
+const userData = ipcRenderer.sendSync('get-user-data-path');
+const CONFIG_PATH = path.join(userData, 'config.json');
 
 function load() {
   try {
