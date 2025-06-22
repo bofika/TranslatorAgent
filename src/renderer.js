@@ -3,6 +3,7 @@ const addBtn = document.getElementById('addTarget');
 const startBtn = document.getElementById('start');
 const statusDiv = document.getElementById('status');
 const sourceInput = document.getElementById('sourceLang');
+const setCredsBtn = document.getElementById('setCreds');
 
 const PalabraClient = require('./palabraClient');
 const config = require('./config');
@@ -10,6 +11,18 @@ const config = require('./config');
 let targets = [];
 let palabraClient = null;
 let cfg = config.load();
+
+function promptCredentials() {
+  cfg.palabraKey = prompt('Enter Palabra API key:', cfg.palabraKey || '') || cfg.palabraKey || '';
+  cfg.livekitUrl = prompt('Enter LiveKit URL:', cfg.livekitUrl || '') || cfg.livekitUrl || '';
+  cfg.livekitApiKey = prompt('Enter LiveKit API key:', cfg.livekitApiKey || '') || cfg.livekitApiKey || '';
+  cfg.livekitApiSecret = prompt('Enter LiveKit API secret:', cfg.livekitApiSecret || '') || cfg.livekitApiSecret || '';
+  config.save(cfg);
+}
+
+setCredsBtn.onclick = () => {
+  promptCredentials();
+};
 
 addBtn.onclick = () => {
   const lang = prompt('Target language code (e.g. es, fr):');
@@ -23,9 +36,8 @@ addBtn.onclick = () => {
 
 startBtn.onclick = async () => {
   const sourceLang = sourceInput.value || 'en';
-  if (!cfg.palabraKey) {
-    cfg.palabraKey = prompt('Enter Palabra API key:') || '';
-    config.save(cfg);
+  if (!cfg.palabraKey || !cfg.livekitUrl || !cfg.livekitApiKey || !cfg.livekitApiSecret) {
+    promptCredentials();
   }
   statusDiv.textContent = 'Connecting to Palabra...';
 
