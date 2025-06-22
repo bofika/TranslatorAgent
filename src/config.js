@@ -6,10 +6,18 @@ const userData = ipcRenderer.sendSync('get-user-data-path');
 const CONFIG_PATH = path.join(userData, 'config.json');
 
 function load() {
+  const defaults = {
+    palabraKey: '',
+    livekitUrl: '',
+    livekitApiKey: '',
+    livekitApiSecret: '',
+  };
+
   try {
-    return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+    const data = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+    return { ...defaults, ...data };
   } catch {
-    return { palabraKey: '', livekitUrl: '' };
+    return defaults;
   }
 }
 

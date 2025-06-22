@@ -28,6 +28,7 @@ npm start
 On launch the application asks for your **Palabra** API key. You can obtain a key and view the API schema at [Palabra's OpenAPI docs](https://api.palabra.ai/docs/openapi.json). The key is used when establishing the WebSocket connection for real-time translation.
 
 The key is stored locally in `config.json` so you won't need to re-enter it each time.
+LiveKit connection details (`livekitUrl`, `livekitApiKey` and `livekitApiSecret`) are stored in the same file and will be requested if missing.
 
 ## Directory Structure
 
